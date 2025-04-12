@@ -2,6 +2,9 @@
 session_start();
 require_once 'db_connection.php';
 
+// Set header to JSON response
+header('Content-Type: application/json');
+
 // Check if form was submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get form data
@@ -14,8 +17,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     // Validate inputs
     if (empty($branch_name) || empty($state) || empty($city) || empty($zip_code) || empty($opening_date)) {
-        $_SESSION['error'] = "All fields are required";
-        header("Location: index.php#branches");
+        echo json_encode([
+            'success' => false,
+            'error' => "All fields are required"
+        ]);
         exit;
     }
     
@@ -24,19 +29,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bind_param("sssssi", $branch_name, $state, $city, $zip_code, $opening_date, $id);
     
     if ($stmt->execute()) {
-        $_SESSION['success'] = "Branch updated successfully";
+        echo json_encode([
+            'success' => true,
+            'message' => "Branch updated successfully"
+        ]);
     } else {
-        $_SESSION['error'] = "Error updating branch: " . $conn->error;
+        echo json_encode([
+            'success' => false,
+            'error' => "Error updating branch: " . $conn->error
+        ]);
     }
     
     $stmt->close();
-    
-    // Redirect back to branches page
-    header("Location: index.php#branches");
-    exit;
 } else {
-    // If not a POST request, redirect to index
-    header("Location: index.php");
-    exit;
+    // If not a POST request, return error
+    echo json_encode([
+        'success' => false,
+        'error' => "Invalid request method"
+    ]);
 }
 ?>

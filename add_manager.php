@@ -12,12 +12,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("sssi", $username, $email, $password, $bid);
 
     if ($stmt->execute()) {
-        $_SESSION['success'] = "Manager added successfully!";
+        $_SESSION['delete_success'] = 'Manager Added successfully!';
     } else {
-        $_SESSION['error'] = "Error adding manager: " . $conn->error;
+        $_SESSION['delete_error'] = 'Failed to Add Manager. Please try again.';
     }
 
     $stmt->close();
-    header("Location: admin_dashboard.php");
+    header("Location: admin_dashboard.php?section=managers");
     exit();
 }

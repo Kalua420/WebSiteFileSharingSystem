@@ -2,6 +2,7 @@
 session_start();
 require_once 'db_connection.php';
 
+
 // Function to delete branch
 function deleteBranch($branchId, $conn) {
     // Prepare the SQL query to delete the branch
@@ -14,7 +15,7 @@ function deleteBranch($branchId, $conn) {
         $_SESSION['delete_success'] = 'Branch deleted successfully!';
     } else {
         $_SESSION['delete_error'] = 'Failed to delete branch. Please try again.';
-    }
+    }      
 }
 
 // Check if branch ID is provided
@@ -25,6 +26,6 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     $_SESSION['delete_error'] = 'No branch ID provided.';
 }
 
-header("Location: admin_dashboard.php"); // Redirect back to dashboard after deletion
+header("Location: admin_dashboard.php?section=branches"); // Redirect back to dashboard after deletion
 exit();
 ?>

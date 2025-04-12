@@ -555,3 +555,208 @@ td.mac-address.dest {
         width: 95%;
     }
 }
+
+/* Enhanced styles for the logs section */
+.search-container {
+    background: #f7f7f7;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.search-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.search-group {
+    flex: 1;
+}
+
+.search-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.search-group input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.search-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.search-buttons button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-search {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn-clear {
+    background-color: #f44336;
+    color: white;
+}
+
+.btn-report {
+    background-color: #2196F3;
+    color: white;
+}
+
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.table-container {
+    overflow-x: auto;
+    margin-top: 10px;
+}
+
+.no-results {
+    padding: 20px;
+    text-align: center;
+    background: #f9f9f9;
+    border-radius: 4px;
+    color: #666;
+}
+
+/* Log entry styling */
+td.log-id {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+td.mac-address.source {
+    color: #2ecc71;
+    font-family: monospace;
+}
+
+td.mac-address.dest {
+    color: #3498db;
+    font-family: monospace;
+}
+    /* Enhanced styles for the logs section */
+    .search-container {
+        background: #f7f7f7;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .search-row {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 10px;
+    }
+
+    .search-group {
+        flex: 1;
+    }
+
+    .search-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 500;
+    }
+
+    .search-group input {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .search-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .search-buttons button {
+        padding: 8px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .btn-search {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .btn-clear {
+        background-color: #f44336;
+        color: white;
+    }
+
+    .btn-report {
+        background-color: #2196F3;
+        color: white;
+    }
+
+    .results-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .table-container {
+        overflow-x: auto;
+        margin-top: 10px;
+    }
+
+    .no-results {
+        padding: 20px;
+        text-align: center;
+        background: #f9f9f9;
+        border-radius: 4px;
+        color: #666;
+    }
+
+    /* Log entry styling */
+    td.log-id {
+        color: #e74c3c;
+        font-weight: bold;
+    }
+
+    td.mac-address.source {
+        color: #2ecc71;
+        font-family: monospace;
+    }
+
+    td.mac-address.dest {
+        color: #3498db;
+        font-family: monospace;
+    }

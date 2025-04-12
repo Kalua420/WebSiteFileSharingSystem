@@ -13,12 +13,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("sssss", $branch_name, $state, $city, $zip_code, $opening_date);
 
     if ($stmt->execute()) {
-        $_SESSION['success'] = "Branch added successfully!";
+        $_SESSION['delete_success'] = 'Branch Added successfully!';
     } else {
-        $_SESSION['error'] = "Error adding branch: " . $conn->error;
+        $_SESSION['delete_error'] = 'Failed to Add Branch. Please try again.';
     }
 
     $stmt->close();
-    header("Location: admin_dashboard.php");
+    header("Location: admin_dashboard.php?section=branches");
     exit();
 }

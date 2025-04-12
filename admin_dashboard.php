@@ -63,8 +63,61 @@ $pendingUsers = $conn->query("SELECT COUNT(*) as count FROM users WHERE status='
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <style>
+    #customAlert {
+      display: none;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #4CAF50;
+      color: white;
+      padding: 15px;
+      border-radius: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+  </style>
 </head>
 <body>
+<!-- Custom Alert Box -->
+<div id="customAlert"></div>
+
+<script>
+  function showAlert(message, duration = 3000) {
+    const alertBox = document.getElementById('customAlert');
+    alertBox.textContent = message;
+    alertBox.style.display = 'block';
+    alertBox.style.position = 'fixed';
+    alertBox.style.top = '20px';
+    alertBox.style.right = '20px';
+    alertBox.style.backgroundColor = '#4CAF50';
+    alertBox.style.color = 'white';
+    alertBox.style.padding = '15px';
+    alertBox.style.borderRadius = '4px';
+    alertBox.style.boxShadow = '0 2px 6px rgba(0,0,0,0.2)';
+    alertBox.style.zIndex = '1000';
+    alertBox.style.fontFamily = 'sans-serif';
+
+    setTimeout(() => {
+      alertBox.style.display = 'none';
+    }, duration);
+  }
+</script>
+<?php
+if (isset($_SESSION['delete_success'])) {
+    $msg = $_SESSION['delete_success'];
+    echo "<script>showAlert(" . json_encode($msg) . ");</script>";
+    unset($_SESSION['delete_success']);
+}
+
+if (isset($_SESSION['delete_error'])) {
+    $msg = $_SESSION['delete_error'];
+    echo "<script>showAlert(" . json_encode($msg) . ", 4000, '#f44336');</script>"; // red for error
+    unset($_SESSION['delete_error']);
+}
+?>
+
+
     <div class="container">
         <!-- Sidebar -->
         <aside class="sidebar">
@@ -101,175 +154,170 @@ $pendingUsers = $conn->query("SELECT COUNT(*) as count FROM users WHERE status='
 
         </aside>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Dashboard Section -->
-            <section id="dashboard" class="section active">
-                <h1>Dashboard Overview</h1>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <i class="fas fa-user-tie"></i>
-                        <h3>Total Managers</h3>
-                        <p><?php echo $totalManagers; ?></p>
-                    </div>
-                    <div class="stat-card">
-                        <i class="fas fa-building"></i>
-                        <h3>Total Branches</h3>
-                        <p><?php echo $totalBranches; ?></p>
-                    </div>
-                    <div class="stat-card">
-                        <i class="fas fa-users"></i>
-                        <h3>Total Users</h3>
-                        <p><?php echo $totalUsers; ?></p>
-                    </div>
-                    <div class="stat-card">
-                        <i class="fas fa-clock"></i>
-                        <h3>Pending Users</h3>
-                        <p><?php echo $pendingUsers; ?></p>
-                    </div>
-                </div>
-            </section>
+<!-- Main Content -->
+<main class="main-content">
+    <!-- Dashboard Section -->
+    <section id="dashboard" class="section <?php echo ($activeSection == 'dashboard') ? 'active' : ''; ?>">
+        <h1>Dashboard Overview</h1>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i class="fas fa-user-tie"></i>
+                <h3>Total Managers</h3>
+                <p><?php echo $totalManagers; ?></p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-building"></i>
+                <h3>Total Branches</h3>
+                <p><?php echo $totalBranches; ?></p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-users"></i>
+                <h3>Total Users</h3>
+                <p><?php echo $totalUsers; ?></p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-clock"></i>
+                <h3>Pending Users</h3>
+                <p><?php echo $pendingUsers; ?></p>
+            </div>
+        </div>
+    </section>
 
-            <!-- Managers Section -->
-<section id="managers" class="section">
-    <div class="section-header">
-        <h1>Managers</h1>
-        <button onclick="showModal('addManagerModal')" class="btn-add">
-            <i class="fas fa-plus"></i> Add Manager
-        </button>
-    </div>
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Branch</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while($manager = $managers->fetch_assoc()): ?>
-                <tr>
-                    <td><?php echo $manager['id']; ?></td>
-                    <td><?php echo $manager['username']; ?></td>
-                    <td><?php echo $manager['email']; ?></td>
-                    <td><?php echo $manager['branch_name']; ?></td>
-                    <td>
-                        <!-- Edit button (optional, you can implement it later) -->
-                        <a href="#" onclick="showPanel('managerPanel', 'edit', {id: '<?php echo $manager['id']; ?>', username: '<?php echo $manager['username']; ?>', email: '<?php echo $manager['email']; ?>', bid: '<?php echo $manager['bid']; ?>'})" class="btn-edit">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        
-                        <!-- Delete button with confirmation -->
-                        <a href="delete_manager.php?id=<?php echo $manager['id']; ?>" onclick="return confirm('Are you sure you want to delete this manager?');">
-                            <button class="btn-delete">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </a>
-                    </td>
-                </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
-    </div>
-</section>
+    <!-- Managers Section -->
+    <section id="managers" class="section <?php echo ($activeSection == 'managers') ? 'active' : ''; ?>">
+        <div class="section-header">
+            <h1>Managers</h1>
+            <button onclick="showModal('addManagerModal')" class="btn-add">
+                <i class="fas fa-plus"></i> Add Manager
+            </button>
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Branch</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while($manager = $managers->fetch_assoc()): ?>
+                    <tr>
+                        <td><?php echo $manager['id']; ?></td>
+                        <td><?php echo $manager['username']; ?></td>
+                        <td><?php echo $manager['email']; ?></td>
+                        <td><?php echo $manager['branch_name']; ?></td>
+                        <td>
+                            <!-- Edit button (optional, you can implement it later) -->
+                            <a href="#" onclick="showPanel('managerPanel', 'edit', {id: '<?php echo $manager['id']; ?>', username: '<?php echo $manager['username']; ?>', email: '<?php echo $manager['email']; ?>', bid: '<?php echo $manager['bid']; ?>'})" class="btn-edit">
+                                <i class="fas fa-edit"></i>
+                            </a>
 
+                            <!-- Delete button with confirmation -->
+                            <a href="delete_manager.php?id=<?php echo $manager['id']; ?>" onclick="return confirm('Are you sure you want to delete this manager?');">
+                                <button class="btn-delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </a>
+                        </td>
+                    </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
+    </section>
 
-           <!-- Branches Section -->
-<section id="branches" class="section">
-    <div class="section-header">
-        <h1>Branches</h1>
-        <button onclick="showModal('addBranchModal')" class="btn-add">
-            <i class="fas fa-plus"></i> Add Branch
-        </button>
-    </div>
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Branch Name</th>
-                    <th>State</th>
-                    <th>City</th>
-                    <th>ZIP Code</th>
-                    <th>Assigned Manager</th>
-                    <th>Opening Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while($branch = $branches->fetch_assoc()): ?>
-                <tr>
-                    <td><?php echo $branch['id']; ?></td>
-                    <td><?php echo $branch['branch_name']; ?></td>
-                    <td><?php echo $branch['state']; ?></td>
-                    <td><?php echo $branch['city']; ?></td>
-                    <td><?php echo $branch['zip_code']; ?></td>
-                    <td><?php echo $branch['username']; ?></td>
-                    <td><?php echo $branch['opening_date']; ?></td>
-                    <td>
-                        <!-- Edit button (optional, can be implemented later) -->
-                        <a href="#" onclick="showPanel('branchPanel', 'edit', {id: '<?php echo $branch['id']; ?>', branch_name: '<?php echo $branch['branch_name']; ?>', state: '<?php echo $branch['state']; ?>', city: '<?php echo $branch['city']; ?>', zip_code: '<?php echo $branch['zip_code']; ?>', opening_date: '<?php echo $branch['opening_date']; ?>'})" class="btn-edit">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        
-                        <!-- Delete button with confirmation -->
-                        <a href="delete_branch.php?id=<?php echo $branch['id']; ?>" onclick="return confirm('Are you sure you want to delete this branch?');">
-                            <button class="btn-delete">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </a>
-                    </td>
-                </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
-    </div>
-</section>
+    <!-- Branches Section -->
+    <section id="branches" class="section <?php echo ($activeSection == 'branches') ? 'active' : ''; ?>">
+        <div class="section-header">
+            <h1>Branches</h1>
+            <button onclick="showModal('addBranchModal')" class="btn-add">
+                <i class="fas fa-plus"></i> Add Branch
+            </button>
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Branch Name</th>
+                        <th>State</th>
+                        <th>City</th>
+                        <th>ZIP Code</th>
+                        <th>Assigned Manager</th>
+                        <th>Opening Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while($branch = $branches->fetch_assoc()): ?>
+                    <tr>
+                        <td><?php echo $branch['id']; ?></td>
+                        <td><?php echo $branch['branch_name']; ?></td>
+                        <td><?php echo $branch['state']; ?></td>
+                        <td><?php echo $branch['city']; ?></td>
+                        <td><?php echo $branch['zip_code']; ?></td>
+                        <td><?php echo $branch['username']; ?></td>
+                        <td><?php echo $branch['opening_date']; ?></td>
+                        <td>
+                            <!-- Edit button (optional, can be implemented later) -->
+                            <a href="#" onclick="showPanel('branchPanel', 'edit', {id: '<?php echo $branch['id']; ?>', branch_name: '<?php echo $branch['branch_name']; ?>', state: '<?php echo $branch['state']; ?>', city: '<?php echo $branch['city']; ?>', zip_code: '<?php echo $branch['zip_code']; ?>', opening_date: '<?php echo $branch['opening_date']; ?>'})" class="btn-edit">
+                                <i class="fas fa-edit"></i>
+                            </a>
 
+                            <!-- Delete button with confirmation -->
+                            <a href="delete_branch.php?id=<?php echo $branch['id']; ?>" onclick="return confirm('Are you sure you want to delete this branch?');">
+                                <button class="btn-delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </a>
+                        </td>
+                    </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
+    </section>
 
-<!-- Users Section -->
-<section id="users" class="section">
-    <h1>Users</h1>
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Branch</th>
-                    <th>Status</th>
-                    <th>Created At</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while($user = $users->fetch_assoc()): ?>
-                <tr>
-                    <td><?php echo $user['id']; ?></td>
-                    <td><?php echo $user['email']; ?></td>
-                    <td><?php echo $user['phone']; ?></td>
-                    <td><?php echo $user['branch_name']; ?></td>
-                    <td><span class="status-badge <?php echo $user['status']; ?>"><?php echo $user['status']; ?></span></td>
-                    <td><?php echo $user['created_at']; ?></td>
-                </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
-    </div>
-</section>
-<?php
-// Logs Section with Optimized Search and Report Features
-$section_id = 'logs';
-?>
-<section id="<?php echo $section_id; ?>" class="section">
+    <!-- Users Section -->
+    <section id="users" class="section <?php echo ($activeSection == 'users') ? 'active' : ''; ?>">
+        <h1>Users</h1>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Branch</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while($user = $users->fetch_assoc()): ?>
+                    <tr>
+                        <td><?php echo $user['id']; ?></td>
+                        <td><?php echo $user['email']; ?></td>
+                        <td><?php echo $user['phone']; ?></td>
+                        <td><?php echo $user['branch_name']; ?></td>
+                        <td><span class="status-badge <?php echo $user['status']; ?>"><?php echo $user['status']; ?></span></td>
+                        <td><?php echo $user['created_at']; ?></td>
+                    </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+ <section id="logs" class="section <?php echo ($activeSection == 'logs') ? 'active' : ''; ?>">
     <h1>System Logs</h1>
     
     <!-- Optimized Search Form -->
     <div class="search-container">
-        <form id="logSearchForm" method="GET" action="#<?php echo $section_id; ?>">
+        <form id="logSearchForm" method="GET" action="">
             <div class="search-row">
                 <div class="search-group">
                     <label for="sender_id">Sender ID:</label>
@@ -305,15 +353,16 @@ $section_id = 'logs';
                 </div>
             </div>
             <div class="search-buttons">
-                <button type="submit" class="btn-search"><i class="fas fa-search"></i> Search</button>
-                <button type="button" onclick="clearLogSearch()" class="btn-clear"><i class="fas fa-times"></i> Clear</button>
-                
-                <?php if(isset($_GET['search_performed']) && $_GET['search_performed'] == 'true'): ?>
-                <button type="button" onclick="generateLogReport()" class="btn-report"><i class="fas fa-file-export"></i> Generate Report</button>
-                <?php endif; ?>
-            </div>
-        </form>
-    </div>
+            <input type="hidden" name="section" value="logs">
+            <button type="submit" class="btn-search"><i class="fas fa-search"></i> Search</button>
+            <button type="button" onclick="clearLogSearch()" class="btn-clear"><i class="fas fa-times"></i> Clear</button>
+            
+            <?php if(isset($_GET['search_performed']) && $_GET['search_performed'] == 'true'): ?>
+            <button type="button" onclick="generateLogReport()" class="btn-report"><i class="fas fa-file-export"></i> Generate Report</button>
+            <?php endif; ?>
+        </div>
+    </form>
+</div>
     
     <?php
     // Function to format file size
@@ -520,114 +569,9 @@ $section_id = 'logs';
     </form>
 </section>
 
-<style>
-/* Enhanced styles for the logs section */
-.search-container {
-    background: #f7f7f7;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.search-row {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 10px;
-}
-
-.search-group {
-    flex: 1;
-}
-
-.search-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 500;
-}
-
-.search-group input {
-    width: 100%;
-    padding: 8px 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-}
-
-.search-buttons {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.search-buttons button {
-    padding: 8px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.btn-search {
-    background-color: #4CAF50;
-    color: white;
-}
-
-.btn-clear {
-    background-color: #f44336;
-    color: white;
-}
-
-.btn-report {
-    background-color: #2196F3;
-    color: white;
-}
-
-.results-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eee;
-}
-
-.table-container {
-    overflow-x: auto;
-    margin-top: 10px;
-}
-
-.no-results {
-    padding: 20px;
-    text-align: center;
-    background: #f9f9f9;
-    border-radius: 4px;
-    color: #666;
-}
-
-/* Log entry styling */
-td.log-id {
-    color: #e74c3c;
-    font-weight: bold;
-}
-
-td.mac-address.source {
-    color: #2ecc71;
-    font-family: monospace;
-}
-
-td.mac-address.dest {
-    color: #3498db;
-    font-family: monospace;
-}
-</style>
-
 <script>
-// Enhanced JavaScript functions
-function clearLogSearch() {
+    // Enhanced JavaScript functions
+    function clearLogSearch() {
     document.getElementById('sender_id').value = '';
     document.getElementById('receiver_id').value = '';
     document.getElementById('email').value = '';
@@ -643,9 +587,9 @@ function clearLogSearch() {
     form.appendChild(input);
     
     form.submit();
-}
+    }
 
-function generateLogReport() {
+    function generateLogReport() {
     // Update the hidden form fields with current search values
     document.getElementById('report_sender_id').value = document.getElementById('sender_id').value;
     document.getElementById('report_receiver_id').value = document.getElementById('receiver_id').value;
@@ -655,93 +599,90 @@ function generateLogReport() {
     
     // Submit the form
     document.getElementById('reportForm').submit();
-}
+    }
 
-// Add hidden input to mark a search was performed
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('logSearchForm');
-    form.addEventListener('submit', function() {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'search_performed';
-        input.value = 'true';
-        form.appendChild(input);
+    // Add hidden input to mark a search was performed
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('logSearchForm');
+        form.addEventListener('submit', function() {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'search_performed';
+            input.value = 'true';
+            form.appendChild(input);
+        });
     });
-});
 </script>
+    </main>
+</div>
 
-
-
-        </main>
+<!-- Add Manager Modal -->
+<div id="addManagerModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Add New Manager</h2>
+        <form id="managerForm" action="add_manager.php" method="POST">
+            <div class="form-group">
+                <label>Username:</label>
+                <input type="text" name="username" required>
+            </div>
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label>Branch:</label>
+                <select name="bid" required>
+                    <?php 
+                    $branches->data_seek(0);
+                    while($branch = $branches->fetch_assoc()): 
+                    ?>
+                    <option value="<?php echo $branch['id']; ?>"><?php echo $branch['branch_name']; ?></option>
+                    <?php endwhile; ?>
+                </select>
+            </div>
+            <button type="submit" class="btn-submit">Add Manager</button>
+        </form>
     </div>
+</div>
 
-    <!-- Add Manager Modal -->
-    <div id="addManagerModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Add New Manager</h2>
-            <form id="managerForm" action="add_manager.php" method="POST">
-                <div class="form-group">
-                    <label>Username:</label>
-                    <input type="text" name="username" required>
-                </div>
-                <div class="form-group">
-                    <label>Email:</label>
-                    <input type="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label>Password:</label>
-                    <input type="password" name="password" required>
-                </div>
-                <div class="form-group">
-                    <label>Branch:</label>
-                    <select name="bid" required>
-                        <?php 
-                        $branches->data_seek(0);
-                        while($branch = $branches->fetch_assoc()): 
-                        ?>
-                        <option value="<?php echo $branch['id']; ?>"><?php echo $branch['branch_name']; ?></option>
-                        <?php endwhile; ?>
-                    </select>
-                </div>
-                <button type="submit" class="btn-submit">Add Manager</button>
-            </form>
-        </div>
+<!-- Add Branch Modal -->
+<div id="addBranchModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Add New Branch</h2>
+        <form id="branchForm" action="add_branch.php" method="POST">
+            <div class="form-group">
+                <label>Branch Name:</label>
+                <input type="text" name="branch_name" required>
+            </div>
+            <div class="form-group">
+                <label>State:</label>
+                <input type="text" name="state" required>
+            </div>
+            <div class="form-group">
+                <label>City:</label>
+                <input type="text" name="city" required>
+            </div>
+            <div class="form-group">
+                <label>ZIP Code:</label>
+                <input type="text" name="zip_code" required>
+            </div>
+            <div class="form-group">
+                <label>Opening Date:</label>
+                <input type="date" name="opening_date" required>
+            </div>
+            <button type="submit" class="btn-submit">Add Branch</button>
+        </form>
     </div>
+</div>
 
-    <!-- Add Branch Modal -->
-    <div id="addBranchModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Add New Branch</h2>
-            <form id="branchForm" action="add_branch.php" method="POST">
-                <div class="form-group">
-                    <label>Branch Name:</label>
-                    <input type="text" name="branch_name" required>
-                </div>
-                <div class="form-group">
-                    <label>State:</label>
-                    <input type="text" name="state" required>
-                </div>
-                <div class="form-group">
-                    <label>City:</label>
-                    <input type="text" name="city" required>
-                </div>
-                <div class="form-group">
-                    <label>ZIP Code:</label>
-                    <input type="text" name="zip_code" required>
-                </div>
-                <div class="form-group">
-                    <label>Opening Date:</label>
-                    <input type="date" name="opening_date" required>
-                </div>
-                <button type="submit" class="btn-submit">Add Branch</button>
-            </form>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
-    <!-- Slide Panel for Manager -->
+<script src="script.js"></script>
+<!-- Slide Panel for Manager -->
 <div id="managerPanel" class="side-panel">
     <div class="panel-content">
         <div class="panel-header">

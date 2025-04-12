@@ -24,7 +24,7 @@ if (isset($_FILES['profile_pic'])) {
    if (move_uploaded_file($_FILES["profile_pic"]["tmp_name"], $target_file)) {
        $sql = "UPDATE manager SET profile_pic = '$new_filename' WHERE id = '$manager_id'";
        $conn->query($sql);
-       header("Location: manager_dashboard.php");
+       header("Location: manager_dashboard.php?view=profile");
        exit();
    }
 }
@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
    
    $sql = "UPDATE users SET status = '$status' WHERE id = '$user_id'";
    $conn->query($sql);
-   header("Location: manager_dashboard.php");
+   header("Location: manager_dashboard.php?view=users");
    exit();
 }
 

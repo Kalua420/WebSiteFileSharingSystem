@@ -12,17 +12,17 @@ if (isset($_GET['id'])) {
     $stmt->bind_param("i", $managerId);
 
     if ($stmt->execute()) {
-        $_SESSION['success'] = 'Manager deleted successfully!';
+        $_SESSION['delete_success'] = 'Manager deleted successfully!';
     } else {
-        $_SESSION['error'] = 'Failed to delete manager. Please try again.';
-    }
+        $_SESSION['delete_error'] = 'Failed to delete Manager. Please try again.';
+    } 
 
     // Redirect back to the 'Managers' section
-    header("Location: admin_dashboard.php#managers"); 
+    header("Location: admin_dashboard.php?section=managers"); 
     exit();
 } else {
     $_SESSION['error'] = 'No manager ID provided.';
-    header("Location: admin_dashboard.php#managers");
+    header("Location: admin_dashboard.php?section=managers");
     exit();
 }
 ?>
