@@ -1,11 +1,50 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Apr 12, 2025 at 05:36 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `project`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin`
+--
+
 CREATE TABLE `admin` (
   `id` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `admin`
+--
+
 INSERT INTO `admin` (`id`, `username`, `password`) VALUES
 (2, 'admin', '$2y$10$/eEIhMPSLS4BPAuqGOTy0u7OLWOAI4o.u0VjJSLRVCS9hRHb4dOzi');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `branch`
+--
 
 CREATE TABLE `branch` (
   `id` int(11) NOT NULL,
@@ -16,12 +55,21 @@ CREATE TABLE `branch` (
   `opening_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `branch`
+--
+
 INSERT INTO `branch` (`id`, `branch_name`, `state`, `city`, `zip_code`, `opening_date`) VALUES
-(29, 'Pathali Pahar', 'Assam', 'North Lakhimpur', '784163', '2025-03-05'),
-(30, 'Harmutty', 'Assam', 'North Lakhimpur', '784162', '2025-03-05'),
 (31, 'Banderdewa', 'Assam', 'North Lakhimpur', '784162', '2025-03-05'),
-(33, 'Sonapur', 'Maharastra', 'Mumbai', '547896', '2025-03-05'),
-(34, 'Laluk', 'Assam', 'North Lakhimpur', '784162', '2025-03-06');
+(41, 'Pathali Pahar', 'Assam', 'North Lakhimpur', '784163', '2025-04-11'),
+(53, 'Laluk', 'Assam', 'North Lakhimpur', '784160', '2025-04-04'),
+(57, 'Harmutty', 'Assam', 'North Lakhimpur', '784162', '2025-04-20');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `logs`
+--
 
 CREATE TABLE `logs` (
   `log_id` int(11) NOT NULL,
@@ -30,20 +78,69 @@ CREATE TABLE `logs` (
   `source_mac` varchar(17) NOT NULL,
   `destination_mac` varchar(17) NOT NULL,
   `filename` varchar(255) NOT NULL,
-  `timestamp` datetime DEFAULT current_timestamp()
+  `timestamp` datetime DEFAULT current_timestamp(),
+  `file_size` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `logs` (`log_id`, `sender_id`, `receiver_id`, `source_mac`, `destination_mac`, `filename`, `timestamp`) VALUES
-(1, 1, 2, 'DA:26:F8:55:11:FD', '48:A4:93:44:A4:72', 'chrdata1741080750352.jpg', '2025-03-05 22:23:57'),
-(2, 1, 2, 'DA:26:F8:55:11:FD', '48:A4:93:44:A4:72', '1000296791-Photoroom.png', '2025-03-05 22:24:02'),
-(3, 1, 2, 'DA:26:F8:55:11:FD', '48:A4:93:44:A4:72', 'IMG_20250128_173222.png', '2025-03-05 22:24:06'),
-(4, 1, 2, 'DA:26:F8:55:11:FD', '48:A4:93:44:A4:72', 'images.jpg', '2025-03-05 22:24:08'),
-(5, 2, 1, 'B4:F7:A1:84:8C:4D', 'DA:26:F8:55:11:FD', 'd51fcao-e1fe880b-de34-41c3-ad2d-fc746ba63154.jpg', '2025-03-05 22:24:23'),
-(6, 2, 1, 'B4:F7:A1:84:8C:4D', 'DA:26:F8:55:11:FD', 'the_luminous_seer_by_asymoney_dj5sjor-fullview.jpg', '2025-03-05 22:24:24'),
-(7, 2, 1, 'B4:F7:A1:84:8C:4D', 'DA:26:F8:55:11:FD', 'shadowy_grove_by_asymoney_diqgy0f-fullview.jpg', '2025-03-05 22:24:25'),
-(8, 1, 2, 'DA:26:F8:55:11:FD', '48:A4:93:44:A4:72', '821.png', '2025-03-06 11:03:40'),
-(9, 1, 2, 'DA:26:F8:55:11:FD', '48:A4:93:44:A4:72', '1000296791-Photoroom.png', '2025-03-06 11:03:41'),
-(10, 1, 2, 'DA:26:F8:55:11:FD', '48:A4:93:44:A4:72', 'IMG_20250128_173222.png', '2025-03-06 11:04:08');
+--
+-- Dumping data for table `logs`
+--
+
+INSERT INTO `logs` (`log_id`, `sender_id`, `receiver_id`, `source_mac`, `destination_mac`, `filename`, `timestamp`, `file_size`) VALUES
+(1, 1, 2, 'DA:26:F8:55:11:FD', '00:23:76:EE:9A:38', '1000296791-Photoroom.png', '2025-04-11 21:39:38', 872791),
+(2, 1, 2, 'DA:26:F8:55:11:FD', '00:23:76:EE:9A:38', '360_F_646673687_XZtp9uzqfMnivTkHuAVqKab4h5309Kfy.jpg', '2025-04-11 21:39:39', 50049),
+(3, 1, 2, 'DA:26:F8:55:11:FD', '00:23:76:EE:9A:38', 'shadowy_grove_by_asymoney_diqgy0f-fullview.jpg', '2025-04-11 21:39:42', 307490),
+(4, 1, 2, 'DA:26:F8:55:11:FD', '00:23:76:EE:9A:38', 'the_luminous_seer_by_asymoney_dj5sjor-fullview.jpg', '2025-04-11 21:39:43', 420983),
+(5, 1, 2, 'DA:26:F8:55:11:FD', '00:23:76:EE:9A:38', 'FB_IMG_1741232963354.jpg', '2025-04-11 21:39:46', 156581),
+(6, 1, 2, 'DA:26:F8:55:11:FD', '00:23:76:EE:9A:38', 'images.jpg', '2025-04-11 21:39:48', 8521),
+(7, 2, 1, '48:A4:93:6E:34:73', 'DA:26:F8:55:11:FD', 'rang_lgane__aaya_tha_😂😂happy_holi😅_#youtubeshorts_#viralshorts_#holi_#comedy_#funny_#holispecial_😂(720p).mp4', '2025-04-11 21:41:48', 2313380),
+(8, 2, 1, '48:A4:93:6E:34:73', 'DA:26:F8:55:11:FD', 'God_while_creating_my_friend_🤧_#shorts(1080p).mp4', '2025-04-11 21:41:54', 3407283),
+(9, 2, 1, '48:A4:93:6E:34:73', 'DA:26:F8:55:11:FD', '6th Sem Form Fill Up .pdf', '2025-04-11 21:42:35', 2313380),
+(10, 2, 1, '48:A4:93:6E:34:73', 'DA:26:F8:55:11:FD', 'rang_lgane__aaya_tha_😂😂happy_holi😅_#youtubeshorts_#viralshorts_#holi_#comedy_#funny_#holispecial_😂(720p).mp4', '2025-04-11 21:42:35', 2313380),
+(11, 2, 1, '48:A4:93:6E:34:73', 'DA:26:F8:55:11:FD', 'IMG20250411094205.jpg', '2025-04-11 21:42:35', 2216693),
+(12, 2, 1, '48:A4:93:6E:34:73', 'DA:26:F8:55:11:FD', 'IMG20250411094249.jpg', '2025-04-11 21:42:35', 2666258),
+(13, 2, 1, '48:A4:93:6E:34:73', 'DA:26:F8:55:11:FD', 'IMG20250411094250.jpg', '2025-04-11 21:42:35', 2741259),
+(14, 2, 1, '48:A4:93:6E:34:73', 'DA:26:F8:55:11:FD', 'AQN5KSNiQ24a-Sc2KSohwQ9FMozCx8cvagWuM0wRVhON2lrQ5QJkeI4-FkawRA0V0jSuRqoxZHEO6_0rlctpyEx0.mp4', '2025-04-11 21:42:50', 1139518),
+(15, 2, 1, '48:A4:93:6E:34:73', 'DA:26:F8:55:11:FD', 'Rula Diya - Zack Knight 128 Kbps.mp3', '2025-04-11 21:42:55', 3395888),
+(16, 2, 1, '48:A4:93:6E:34:73', 'DA:26:F8:55:11:FD', 'Let_Her_Go_X_Husn_X_Choo_Lo_-_Kxran___Full_AUDIO(128k).mp3', '2025-04-11 21:42:57', 10144842),
+(17, 1, 2, 'DA:26:F8:55:11:FD', '40:4E:36:D0:ED:BD', '1000296791-Photoroom.png', '2025-04-12 11:49:24', 872791),
+(18, 1, 2, 'DA:26:F8:55:11:FD', '40:4E:36:D0:ED:BD', '360_F_646673687_XZtp9uzqfMnivTkHuAVqKab4h5309Kfy.jpg', '2025-04-12 11:49:25', 50049),
+(19, 1, 2, 'DA:26:F8:55:11:FD', '40:4E:36:D0:ED:BD', 'IMG_20250128_173222.png', '2025-04-12 11:49:26', 1314069),
+(20, 1, 2, 'DA:26:F8:55:11:FD', '40:4E:36:D0:ED:BD', 'O Soniye - Bharatt-Saurabh 128 Kbps.mp3', '2025-04-12 11:49:29', 3166075),
+(21, 1, 2, 'DA:26:F8:55:11:FD', '40:4E:36:D0:ED:BD', 'आहा_टमाटर_-_Aaha_Tamatar_Bade_Mazedar_-_Nursery_Rhymes_and_Kids_Song_in_Hindi__Anaya_Rhymes_#cartoon(1080p).mp4', '2025-04-12 11:49:39', 70164192),
+(22, 1, 2, 'DA:26:F8:55:11:FD', '40:4E:36:D0:ED:BD', 'Ben.10.Omniverse.S01E10.720p.Hindi.English.Esubs - Vegamovies.to.mkv', '2025-04-12 11:50:02', 176113919),
+(23, 2, 1, '88:C9:D0:E8:C6:5D', 'DA:26:F8:55:11:FD', 'IMG20250411160856.jpg', '2025-04-12 11:52:14', 2894954),
+(24, 2, 1, '88:C9:D0:E8:C6:5D', 'DA:26:F8:55:11:FD', 'Screenshot_2025-04-10-10-01-24-69_ecf0502680d6fd27042f2b15776045b4.jpg', '2025-04-12 11:52:22', 330321),
+(25, 2, 1, '88:C9:D0:E8:C6:5D', 'DA:26:F8:55:11:FD', 'Screenshot_2025-04-10-09-40-18-16_ecf0502680d6fd27042f2b15776045b4.jpg', '2025-04-12 11:52:23', 216379),
+(26, 2, 1, '88:C9:D0:E8:C6:5D', 'DA:26:F8:55:11:FD', 'Screenshot_2025-04-10-09-40-41-77_ecf0502680d6fd27042f2b15776045b4.jpg', '2025-04-12 11:52:24', 118696),
+(27, 2, 1, '88:C9:D0:E8:C6:5D', 'DA:26:F8:55:11:FD', 'Screenshot_2025-04-09-21-42-25-14_ecf0502680d6fd27042f2b15776045b4.jpg', '2025-04-12 11:52:30', 135203),
+(28, 2, 1, '88:C9:D0:E8:C6:5D', 'DA:26:F8:55:11:FD', 'Screenshot_2025-04-09-21-42-17-91_ecf0502680d6fd27042f2b15776045b4.jpg', '2025-04-12 11:52:30', 101636),
+(29, 2, 1, '88:C9:D0:E8:C6:5D', 'DA:26:F8:55:11:FD', 'Screenshot_2025-04-09-21-42-13-01_ecf0502680d6fd27042f2b15776045b4.jpg', '2025-04-12 11:52:31', 101270),
+(30, 2, 1, '88:C9:D0:E8:C6:5D', 'DA:26:F8:55:11:FD', 'IMG-20250331-WA0005.jpg', '2025-04-12 11:52:33', 203049),
+(31, 2, 1, '88:C9:D0:E8:C6:5D', 'DA:26:F8:55:11:FD', 'IMG-20250331-WA0006.jpg', '2025-04-12 11:52:38', 113044),
+(32, 1, 2, 'DA:26:F8:55:11:FD', '40:9C:28:26:98:70', 'shadowy_grove_by_asymoney_diqgy0f-fullview.jpg', '2025-04-12 12:03:10', 307490),
+(33, 1, 2, 'DA:26:F8:55:11:FD', 'B4:F7:A1:9B:E9:33', 'IMG_20250128_173222.png', '2025-04-12 12:29:40', 1314069),
+(34, 1, 2, 'DA:26:F8:55:11:FD', 'B4:F7:A1:9B:E9:33', '1000296791-Photoroom.png', '2025-04-12 12:29:44', 872791),
+(35, 1, 2, 'DA:26:F8:55:11:FD', 'B4:F7:A1:9B:E9:33', 'आहा_टमाटर_-_Aaha_Tamatar_Bade_Mazedar_-_Nursery_Rhymes_and_Kids_Song_in_Hindi__Anaya_Rhymes_#cartoon(1080p).mp4', '2025-04-12 12:29:56', 70164192),
+(36, 1, 2, 'DA:26:F8:55:11:FD', '40:4E:36:F1:EE:0F', 'Ben.10.Omniverse.S01E10.720p.Hindi.English.Esubs - Vegamovies.to.mkv', '2025-04-12 12:44:24', 176113919),
+(37, 1, 2, 'DA:26:F8:55:11:FD', '70:48:0F:B4:2F:72', 'shadowy_grove_by_asymoney_diqgy0f-fullview.jpg', '2025-04-12 12:47:08', 307490),
+(38, 1, 2, 'DA:26:F8:55:11:FD', '70:48:0F:B4:2F:72', 'the_luminous_seer_by_asymoney_dj5sjor-fullview.jpg', '2025-04-12 12:47:08', 420983),
+(39, 1, 2, 'DA:26:F8:55:11:FD', '70:48:0F:B4:2F:72', 'IMG-20250208-WA0005.jpg', '2025-04-12 12:47:09', 104416),
+(40, 1, 4, 'DA:26:F8:55:11:FD', '94:65:2D:B7:A1:A6', 'IMG_20250128_173222.png', '2025-04-12 20:34:49', 1314069),
+(41, 1, 4, 'DA:26:F8:55:11:FD', '94:65:2D:B7:A1:A6', '360_F_646673687_XZtp9uzqfMnivTkHuAVqKab4h5309Kfy.jpg', '2025-04-12 20:34:49', 50049),
+(42, 1, 4, 'DA:26:F8:55:11:FD', '94:65:2D:B7:A1:A6', 'Baarishen(KoshalWorld.Com).mp3', '2025-04-12 20:34:54', 3248006),
+(43, 1, 4, 'DA:26:F8:55:11:FD', '94:65:2D:B7:A1:A6', 'आहा_टमाटर_-_Aaha_Tamatar_Bade_Mazedar_-_Nursery_Rhymes_and_Kids_Song_in_Hindi__Anaya_Rhymes_#cartoon(1080p).mp4', '2025-04-12 20:35:04', 70164192),
+(44, 1, 4, 'DA:26:F8:55:11:FD', '94:65:2D:B7:A1:A6', 'Ben.10.Omniverse.S01E10.720p.Hindi.English.Esubs - Vegamovies.to.mkv', '2025-04-12 20:35:30', 176113919),
+(45, 4, 1, 'B0:D8:63:7B:A9:66', 'DA:26:F8:55:11:FD', 'Road_House_2024_Hindi_Dubbed_Full_Movie_HDRip.mp4', '2025-04-12 20:36:15', 369196636),
+(46, 4, 1, 'B0:D8:63:7B:A9:66', 'DA:26:F8:55:11:FD', 'Facebook_1744463675520(720p).mp4', '2025-04-12 20:38:41', 2883376),
+(47, 4, 1, 'B0:D8:63:7B:A9:66', 'DA:26:F8:55:11:FD', 'andhera☑️🤣_kuch_naya_janane_ke_liye_subscribe_kare(720p).mp4', '2025-04-12 20:38:45', 2511923),
+(48, 4, 1, 'B0:D8:63:7B:A9:66', 'DA:26:F8:55:11:FD', '[Animedubhindi.com] Mashle Magic and Muscles S02E12 1080p HEVC 10bit WEB-DL Hindi Audio ESub.mkv', '2025-04-12 20:39:21', 249982780);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `manager`
+--
 
 CREATE TABLE `manager` (
   `id` int(11) NOT NULL,
@@ -51,13 +148,25 @@ CREATE TABLE `manager` (
   `username` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `profile_pic` varchar(255) DEFAULT NULL
+  `profile_pic` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `manager` (`id`, `bid`, `username`, `email`, `password`, `profile_pic`) VALUES
-(9, 29, 'Tutu', 'tutu@manager.com', '$2y$10$UZb2knBCpF7g5fujYYeYnOmO3jYWhcbKQDnZU2lCj2oIRVnR40tqa', 'manager_9.jpg'),
-(11, 30, 'Guddu Kumar', 'guddu@manager.com', '$2y$10$.0RlQI0HK10bsD3wEQGcve/HsZfaJEvfFPvsChRfGzbaJ9eC8KTDG', 'manager_11.png'),
-(12, 31, 'Rajen', 'rajen@manager.com', '$2y$10$cWdu2bsXUtNC.2ti9p5w5uX6JWE6e5OIdQBCwGAts3knyRr.AdSWO', NULL);
+--
+-- Dumping data for table `manager`
+--
+
+INSERT INTO `manager` (`id`, `bid`, `username`, `email`, `password`, `profile_pic`, `created_at`) VALUES
+(13, 57, 'Guddu Kumar', 'guddu@manager.com', '$2y$10$BmCL6Mdy/flPLc7UtBisLu7olUUyNG.MJu5F2v7xSDg8UViZf.gBa', NULL, '2025-04-12 04:30:47'),
+(15, 41, 'Tutu Kumar', 'tutu@manager.com', '$2y$10$e/oYyCVQ4EfnTx6BD52I0OK.NBUGxafVg/3Vc5t1EQoHNgTSEAQwq', 'manager_15.jpg', '2025-04-12 04:39:57'),
+(16, 31, 'Rajen Chakma', 'rajen@manager.com', '$2y$10$fuAIdDzClkaIipBKIW9TP.XHVOh1ZX3NLza.ed10MnLkcsdcyzGaW', NULL, '2025-04-12 06:24:29'),
+(18, 53, 'John', 'john@manager.com', '$2y$10$dJyzP6UUyiYA18e7EXP8EuPeMUvTdeJbNDNd4JZnkw9lw1M2B4cnC', NULL, '2025-04-12 15:12:44');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
@@ -71,48 +180,96 @@ CREATE TABLE `users` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `users` (`id`, `bid`, `phone`, `email`, `password`, `aadhar`, `address`, `status`, `created_at`) VALUES
-(1, 29, '7845123658', 'babu@user.com', '166f35e44c9f139c9f98aa9da61dc9f9d61bc86088d7968477c055e8d31a06f7', '845123978513', 'Pathali Pahar, Assam , 784163', 'approved', '2025-03-05 16:47:29'),
-(2, 31, '7894612356', 'john@user.com', 'b4b597c714a8f49103da4dab0266af0ee0ae4f8575250a84855c3d76941cd422', '452139497851', 'Banderdewa, Assam, 784162', 'approved', '2025-03-05 16:48:38'),
-(3, 30, '8976451236', 'test@test.com', 'ecd71870d1963316a97e3ac3408c9835ad8cf0f3c1bc703527c30265534f75ae', '412536987541', 'Harmuty, Assam, 784161', 'pending', '2025-03-05 16:49:57'),
-(4, 30, '2258800000', 'guds@gmail.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', '555588888822', 'guds111', 'approved', '2025-03-06 06:08:32'),
-(5, 34, '6464946464', 'michael@user.com', '27cc6994fc1c01ce6659c6bddca9b69c4c6a9418065e612c69d110b3f7b11f8a', '543194666136', 'Mirzapur', 'pending', '2025-03-06 16:15:09');
+--
+-- Dumping data for table `users`
+--
 
+INSERT INTO `users` (`id`, `bid`, `phone`, `email`, `password`, `aadhar`, `address`, `status`, `created_at`) VALUES
+(1, 41, '8946523169', 'test@test.com', 'ecd71870d1963316a97e3ac3408c9835ad8cf0f3c1bc703527c30265534f75ae', '845123795612', 'Pathali Pahar, 784163', 'approved', '2025-04-11 16:06:50'),
+(2, 31, '9632154874', 'babu@user.com', '166f35e44c9f139c9f98aa9da61dc9f9d61bc86088d7968477c055e8d31a06f7', '452136987541', 'Lakhimpur, Assam, 784160', 'approved', '2025-04-11 16:08:01'),
+(3, 41, '7542136985', 'michael@user.com', '34550715062af006ac4fab288de67ecb44793c3a05c475227241535f6ef7a81b', '784563216945', 'Pathali Pahar', 'approved', '2025-04-12 14:50:55'),
+(4, 41, '8542163985', 'gaurav@user.com', '44104fcaef8476724152090d6d7bd9afa8ca5b385f6a99d3c6cf36b943b9872d', '421365827912', 'Banderdewa', 'approved', '2025-04-12 14:52:19');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `admin`
+--
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`id`);
 
+--
+-- Indexes for table `branch`
+--
 ALTER TABLE `branch`
   ADD PRIMARY KEY (`id`);
 
+--
+-- Indexes for table `logs`
+--
 ALTER TABLE `logs`
   ADD PRIMARY KEY (`log_id`);
 
+--
+-- Indexes for table `manager`
+--
 ALTER TABLE `manager`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `bid` (`bid`);
+  ADD PRIMARY KEY (`id`);
 
+--
+-- Indexes for table `users`
+--
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD KEY `bid` (`bid`);
 
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `admin`
+--
 ALTER TABLE `admin`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
+--
+-- AUTO_INCREMENT for table `branch`
+--
 ALTER TABLE `branch`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
+--
+-- AUTO_INCREMENT for table `logs`
+--
 ALTER TABLE `logs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=204;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
+--
+-- AUTO_INCREMENT for table `manager`
+--
 ALTER TABLE `manager`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
+--
+-- AUTO_INCREMENT for table `users`
+--
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
-ALTER TABLE `manager`
-  ADD CONSTRAINT `manager_ibfk_1` FOREIGN KEY (`bid`) REFERENCES `branch` (`id`);
+--
+-- Constraints for dumped tables
+--
 
+--
+-- Constraints for table `users`
+--
 ALTER TABLE `users`
   ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`bid`) REFERENCES `branch` (`id`) ON UPDATE CASCADE;
 COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
