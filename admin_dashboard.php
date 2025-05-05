@@ -1,7 +1,10 @@
 <?php
 // Start the session at the very beginning
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 require_once 'db_connection.php';
+require_once 'auth_check.php';
 
 // Success and error messages
 if (isset($_SESSION['success'])): ?>
@@ -315,7 +318,6 @@ if (isset($_SESSION['delete_error'])) {
  <section id="logs" class="section <?php echo ($activeSection == 'logs') ? 'active' : ''; ?>">
     <h1>System Logs</h1>
     
-    <!-- Optimized Search Form -->
     <div class="search-container">
         <form id="logSearchForm" method="GET" action="">
             <div class="search-row">
